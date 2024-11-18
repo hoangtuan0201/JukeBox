@@ -13,6 +13,7 @@ def set_text(text_area, content):
     text_area.delete("1.0", tk.END)#clear any existing text in the widget
     text_area.insert(1.0, content)#Inserts the new content at the beginning of the widget
 
+
 class TrackViewer():
     def __init__(self, window):
         window.geometry("750x350") # Sets the size of the window
@@ -46,22 +47,25 @@ class TrackViewer():
         #Automatically list all tracks when start the application
         self.list_tracks_clicked()
 
+
     def view_tracks_clicked(self):
         key = self.input_txt.get() #gets the track number from the input
         name = lib.get_name(key)#gets the track name from the track_library modules by the key from input_txt.get(0
         if name is not None: #checks if the track exists
-            artist = lib.get_artist(key)
-            rating = lib.get_rating(key)
-            play_count = lib.get_play_count(key)
+            artist = lib.get_artist(key) # Retrieves the artist's name
+            rating = lib.get_rating(key) # Retrieves the track's rating
+            play_count = lib.get_play_count(key)  # Retrieves the play count of the track
             track_details = f"{name}\n{artist}\nrating: {rating}\nplays: {play_count}"
-            set_text(self.track_txt, track_details)
+            set_text(self.track_txt, track_details)    # Displays track details in the text widget
         else:
-            set_text(self.track_txt, f"Track {key} not found")
-        self.status_lbl.configure(text="View Track button was clicked!")
+            set_text(self.track_txt, f"Track {key} not found") # Displays a not found message
+        self.status_lbl.configure(text="View Track button was clicked!") # Updates the status label
+
 
     def list_tracks_clicked(self):
-        track_list = lib.list_all()
-        set_text(self.list_txt, track_list)
+        track_list = lib.list_all() # Retrieves all information of all tracks in track_library
+        set_text(self.list_txt, track_list) # Displays the track list in the scrolled text widget
+        # Updates the status label
         self.status_lbl.configure(text="List Tracks button was clicked!")
 
 if __name__ == "__main__":  # only runs when this file is run as a standalone

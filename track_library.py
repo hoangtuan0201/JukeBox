@@ -8,7 +8,6 @@ library["03"] = LibraryItem("Highway to Hell ", "AC/DC", 2)
 library["04"] = LibraryItem("Shape of You", "Ed Sheeran", 1)
 library["05"] = LibraryItem("Someone Like You", "Adele", 3)
 
-
 def list_all():
     output = ""
     for key in library:
