@@ -43,14 +43,6 @@ class TrackViewer:
         self.track_txt = tk.Text(window, width=24, height=4, wrap="none")
         self.track_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=10) #places the widget in the grid layout and aligns the widget to the North and West (top-left) of the cel
 
-        #Button to open create track list
-        create_list_btn = tk.Button(window, text="Create Track List", command=self.create_track_list_clicked)
-        create_list_btn.grid(row=1, column=3, padx=10, pady=10) # Places the button in the grid layout
-
-        #Button to update the track list
-        update_list_btn = tk.Button(window, text="Update Track List", command=self.update_track_list_clicked)
-        update_list_btn.grid(row=1, column=3, sticky="S",padx=10, pady=10) # Places the button in the grid layout
-
 
         # Button to exit the application
         exit_btn = tk.Button(window, text="Exit", command=window.quit)
@@ -87,15 +79,6 @@ class TrackViewer:
         # Updates the status label
         self.status_lbl.configure(text="List Tracks button was clicked!")
 
-    def create_track_list_clicked(self):
-        create_window = tk.Toplevel()
-        create_track_list.CreateTrackListWindow(create_window)
-        self.status_lbl.configure(text="Create Track button was clicked!")
-
-    def update_track_list_clicked(self):
-        update_window = tk.Toplevel()
-        update_track.UpdateTrackWindow(update_window)
-        self.status_lbl.configure(text="Update Track button was clicked!")
 
 if __name__ == "__main__":  # only runs when this file is run as a standalone
     window = tk.Tk()        # create a TK object
