@@ -9,7 +9,7 @@ def set_text(text_area, content):
     text_area.delete("1.0", tk.END)  # Clear any existing text
     text_area.insert(tk.END, content)
 
-class UpdateTrackApp:
+class UpdateTrackWindow:
     def __init__(self, window):
         window.geometry("600x500")  # Size of the window
         window.title("Update Track Rating")
@@ -53,7 +53,7 @@ class UpdateTrackApp:
             if key in lib.library:
                 track = lib.library[key]
                 lib.set_rating(key, new_rating)  # Assuming this updates the rating correctly
-                content = f"{track.name} - {track.artist} Play Count: {track.play_count} Rating: {track.stars()}\n"
+                content = f"{track.name} - {track.artist} Play Count: {track.play_count}  Rating: {track.stars()}\n"
                 set_text(self.playlist_display, content)  # Assuming this displays track info correctly
             else:
                 messagebox.showerror("Error", f"Track number {key} is invalid.")
@@ -65,5 +65,5 @@ class UpdateTrackApp:
 if __name__ == "__main__":
     window = tk.Tk()
     fonts.configure()
-    UpdateTrackApp(window)
+    UpdateTrackWindow(window)
     window.mainloop()
