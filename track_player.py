@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from create_track_list import CreateTrackListWindow
+from create_track_list import PlaylistApp
 from update_track import UpdateTrackWindow
 import font_manager as fonts
 from view_tracks import TrackViewer
@@ -11,7 +11,7 @@ def view_tracks_clicked():
     TrackViewer(tk.Toplevel(window))
 def create_track_list_clicked():
     status_lbl.configure(text="Create Track List button was clicked!")
-    CreateTrackListWindow(tk.Toplevel(window))
+    PlaylistApp(tk.Toplevel(window))
 def update_track_list_clicked():
     status_lbl.configure(text="Update Track button was clicked!")
     UpdateTrackWindow(tk.Toplevel(window))

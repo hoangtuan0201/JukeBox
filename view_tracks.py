@@ -61,12 +61,10 @@ class TrackViewer:
 
     def view_tracks_clicked(self):
         key = self.input_txt.get() #gets the track number from the input
-        name = lib.get_name(key)#gets the track name from the track_library modules by the key from input_txt.get(0
-        if name is not None: #checks if the track exists
-            artist = lib.get_artist(key) # Retrieves the artist's name
-            rating = lib.get_rating(key) # Retrieves the track's rating
-            play_count = lib.get_play_count(key)  # Retrieves the play count of the track
-            track_details = f"{name}\n{artist}\nrating: {rating}\nplays: {play_count}"
+
+        if key in lib.library:
+            track = lib.library[key]
+            track_details = f"{track.name}\n{track.artist}\nrating: {track.rating}\nplays: {track.play_count}"
             set_text(self.track_txt, track_details)    # Displays track details in the text widget
         else:
             set_text(self.track_txt, f"Track {key} not found") # Displays a not found message

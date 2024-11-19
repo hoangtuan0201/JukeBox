@@ -2,96 +2,100 @@ import tkinter as tk
 import tkinter.scrolledtext as tkst
 import font_manager as fonts
 import track_library as lib
+from tkinter import messagebox
+
 
 def set_text(text_area, content):
-    text_area.delete("1.0", tk.END)#clear any existing text in the widget
-
+    text_area.delete("1.0", tk.END)  # Clear any existing text
     text_area.insert(tk.END, content)
 
-class CreateTrackListWindow:
+
+class Playlist:
+    def __init__(self, name):
+        self.name = name
+        self.songs = []
+
+    def add_song(self, song, track_number):
+        song.track_number = track_number
+        self.songs.append(song)
+
+
+class PlaylistApp(Playlist):
     def __init__(self, window):
+        super().__init__("Playlist1")
         window.geometry("600x500")
-        window.title("Create Track List")
-        window.configure(bg="#D4BDAC")  # Set background color
+        window.title("Playlist Manager")
+        window.configure(bg="#D4BDAC")
 
         # Title Label
-        tk.Label(window, text="Create New Track", font=("Helvetica", 16, "bold"), bg="#D4BDAC").grid(row=0, column=0,
-                                                                                                     columnspan=2,
-                                                                                                     pady=10)
+        tk.Label(window,text="Playlist Manager",font=("Helvetica", 16, "bold"),bg="#D4BDAC",).grid(row=0, column=0, columnspan=3, pady=10)
 
-        # Label and entry for track name
-        tk.Label(window, text="Track Name:", bg="#D4BDAC").grid(row=1, column=0, padx=10, pady=5, sticky="E")
-        self.track_name_entry = tk.Entry(window, width=30)
-        self.track_name_entry.grid(row=1, column=1, padx=10, pady=5, sticky="W")
+        # Label and Entry for track number
+        tk.Label(window, text="Enter Track Number:", bg="#D4BDAC").grid(row=1, column=0, padx=5, pady=5, sticky="E")
+        self.track_number_entry = tk.Entry(window, width=10)
+        self.track_number_entry.grid(row=1, column=1, padx=5, pady=5, sticky="W")
 
-        # Label and entry for artist name
-        tk.Label(window, text="Artist Name:", bg="#D4BDAC").grid(row=2, column=0, padx=10, pady=5, sticky="E")
-        self.artist_name_entry = tk.Entry(window, width=30)
-        self.artist_name_entry.grid(row=2, column=1, padx=10, pady=5, sticky="W")
+        # Buttons
+        button_frame = tk.Frame(window, bg="#D4BDAC")
+        button_frame.grid(row=2, column=0, columnspan=3, pady=10)
 
-        # Label and entry for track rating
-        tk.Label(window, text="Rating (1-5):", bg="#D4BDAC").grid(row=3, column=0, padx=10, pady=5, sticky="E")
-        self.rating_entry = tk.Entry(window, width=5)
-        self.rating_entry.grid(row=3, column=1, padx=10, pady=5, sticky="W")
+        tk.Button(button_frame, text="Add to Playlist", command=self.add_to_playlist).pack(side="left", padx=5)
+        tk.Button(button_frame, text="Play Playlist", command=self.play).pack(side="left", padx=5)
+        tk.Button(button_frame, text="Reset Playlist", command=self.reset).pack(side="left", padx=5)
 
-        # Button to submit the new track
-        add_btn = tk.Button(window, text="Add Track", command=self.add_track)
-        add_btn.grid(row=4, column=0, columnspan=2, pady=20)
+        # ScrolledText widget to display the playlist
+        self.playlist_display = tkst.ScrolledText(window, width=70, height=15, wrap="word")
+        self.playlist_display.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
 
-        # ScrolledText widget to display added tracks
-        self.track_list_display = tkst.ScrolledText(window, width=70, height=10, wrap="word")
-        self.track_list_display.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+    def add_to_playlist(self):
+        """Add a track to the playlist based on track number."""
+        key = self.track_number_entry.get().strip()
 
+        if key in lib.library:
+            # Add track to playlist
+            track = lib.library[key]
+            self.add_song(track, key)
+            self.display_playlist()
+        else:
+            messagebox.showerror("Error", f"Track number {key} is invalid.")
 
-
-        self.display_tracks()
-
-    def add_track(self):
-        # Logic for adding a track
-        track_name = self.track_name_entry.get().strip()
-        artist_name = self.artist_name_entry.get().strip()
-        # Validate track name
-        if not track_name:
-            set_text(self.track_list_display, "Error: Track name cannot be empty.\n")
+    def play(self):
+        """Simulate playing the playlist by incrementing play counts."""
+        if not self.songs:
+            messagebox.showerror("Error", "Playlist is empty. Add tracks first.")
             return
 
-        # Validate artist name
-        if not artist_name:
-            set_text(self.track_list_display, "Error: Artist name cannot be empty.\n")
-            return
+        # Increment play counts for each track in the playlist using attribute track number in playlist class
+        for song in self.songs:
+            key = song.track_number
+            lib.increment_play_count(key)
 
-        try:
-            rating = int(self.rating_entry.get().strip())
-        except ValueError:
-            set_text(self.track_list_display, "Error: Rating must be a number.\n")
-            return
+        # Display updated playlist with new play counts
+        self.display_playlist()
 
-        if not (1 <= rating <= 5):
-            set_text(self.track_list_display, "Error: Rating must be between 1 and 5.\n")
-            return
+        # Show confirmation to the user
+        messagebox.showinfo("Info", "Playlist played.")
 
-        # If all validations pass, add the track
-        new_key = str(len(lib.library) + 1).zfill(2)
-        new_track = lib.LibraryItem(track_name, artist_name, rating)
-        lib.library[new_key] = new_track
+    def reset(self):
+        """Reset the playlist and clear the text area."""
+        self.songs = []  # Clear the playlist
+        self.display_playlist()
+        messagebox.showinfo("Info", "Playlist has been reset.")
 
-        # Clear entry fields
-        self.track_name_entry.delete(0, tk.END)
-        self.artist_name_entry.delete(0, tk.END)
-        self.rating_entry.delete(0, tk.END)
-
-        # Refresh displayed track list and it will update the data we fill in the input
-        self.display_tracks()
-
+    def display_playlist(self):
+        """Display the playlist in the text area."""
+        if not self.songs:
+            set_text(self.playlist_display, "Playlist is empty.\n")
+        else:
+            content = "Current Playlist:\n"
+            for track in self.songs:
+                content += f"{track.name} - {track.artist} (Play Count: {track.play_count})\n"
+            set_text(self.playlist_display, content)
 
 
-
-    def display_tracks(self):
-        track_list = lib.list_all()
-        set_text(self.track_list_display, track_list)
 if __name__ == "__main__":
     # Create the main window
     create_window = tk.Tk()
     fonts.configure()
-    CreateTrackListWindow(create_window)
+    PlaylistApp(create_window)
     create_window.mainloop()
