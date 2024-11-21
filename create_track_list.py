@@ -50,6 +50,9 @@ class PlaylistApp(Playlist):
     def add_to_playlist(self):
         """Add a track to the playlist based on track number."""
         key = self.track_number_entry.get().strip()
+        if not key.isdigit():
+            messagebox.showerror("Error", "Track number must be a numeric value.")
+            return
 
         if key in lib.library:
             # Add track to playlist
@@ -94,7 +97,6 @@ class PlaylistApp(Playlist):
 
 
 if __name__ == "__main__":
-    # Create the main window
     create_window = tk.Tk()
     fonts.configure()
     PlaylistApp(create_window)

@@ -42,24 +42,38 @@ class UpdateTrackWindow:
 
     def update_rating(self):
         key = self.track_number_entry.get().strip()  # Get track number from entry
-        try:
-            new_rating = int(self.rating_entry.get().strip())
+        rating_input = self.rating_entry.get().strip()
 
-            # Check if the rating is within the valid range
+        # Check if any fields are empty
+        if not key or not rating_input:
+            messagebox.showerror("Error", "Please fill in all fields.")
+            return
+
+        # Validate that the key is a number
+        if not key.isdigit():
+            messagebox.showerror("Error", "Track number must be a numeric value.")
+            return
+
+
+        # Validate and parse the rating
+        try:
+            new_rating = int(rating_input)
             if new_rating < 1 or new_rating > 5:
                 messagebox.showerror("Error", "Rating must be between 1 and 5.")
                 return
-
-            if key in lib.library:
-                track = lib.library[key]
-                lib.set_rating(key, new_rating)  # Assuming this updates the rating correctly
-                content = f"{track.name} - {track.artist} Play Count: {track.play_count}  Rating: {track.stars()}\n"
-                set_text(self.playlist_display, content)  # Assuming this displays track info correctly
-            else:
-                messagebox.showerror("Error", f"Track number {key} is invalid.")
-
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid numeric rating.")
+            return
+
+        # Check if the track number exists in the library
+        if key in lib.library:
+            track = lib.library[key]
+            lib.set_rating(key, new_rating)  # Corrected to pass the parsed integer
+            content = f"{track.name} - {track.artist} Play Count: {track.play_count}  Rating: {track.stars()}\n"
+            set_text(self.playlist_display, content)  # Assuming this displays track info correctly
+            messagebox.showinfo("Success", "Track rating updated successfully!")
+        else:
+            messagebox.showerror("Error", f"Track number {key} is invalid.")
 
 
 if __name__ == "__main__":
