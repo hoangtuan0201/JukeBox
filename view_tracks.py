@@ -1,15 +1,10 @@
 import tkinter as tk
 import tkinter.scrolledtext as tkst
-import update_track
-import create_track_list
 import track_library as lib
 import font_manager as fonts
 
 
 def set_text(text_area, content):
-    #Parameters:
-    # text_area: The tkinter Text widget where content will be inserted.
-    # content: The string content to insert into the text widget.
     text_area.delete("1.0", tk.END)#clear any existing text in the widget
     text_area.insert(1.0, content)#Inserts the new content at the beginning of the widget
 
@@ -17,13 +12,14 @@ def set_text(text_area, content):
 class TrackViewer:
 
     def __init__(self, window):
-        window.geometry("750x350") # Sets the size of the window
+        window.geometry("850x350") # Sets the size of the window
         window.title("View Tracks")  # Sets the window title
         window.configure(bg="#D4BDAC")
+
         # Button to list all tracks
         list_tracks_btn = tk.Button(window, text="List All Tracks", command=self.list_tracks_clicked)
-        list_tracks_btn.grid(row=0, column=0, padx=10, pady=10) # Places the button in the grid layou
-        # Label prompting user to enter a track number
+        list_tracks_btn.grid(row=0, column=0, padx=10, pady=10) # Places the button in the grid layout
+        # Label for prompting user to enter a track number
         enter_lbl = tk.Label(window, text="Enter Track Number")
         enter_lbl.grid(row=0, column=1, padx=10, pady=10) # Places the label in the grid layout
 
@@ -37,12 +33,15 @@ class TrackViewer:
 
         # Scrollable text widget to display the list of all tracks
         self.list_txt = tkst.ScrolledText(window, width=48, height=12, wrap="none")
-        self.list_txt.grid(row=1, column=0, columnspan=3, sticky="W", padx=10, pady=10)# Places the widget in the grid layout and the colummn will span to three columns
+        self.list_txt.grid(row=1, column=0, columnspan=2, sticky="W", padx=10, pady=10)# Places the widget in the grid layout and the colummn will span to three columns
 
         # Text widget to display the details of a selected track
         self.track_txt = tk.Text(window, width=24, height=4, wrap="none")
-        self.track_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=10) #places the widget in the grid layout and aligns the widget to the North and West (top-left) of the cel
+        self.track_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=0) #places the widget in the grid layout and aligns the widget to the North and West (top-left) of the cel
 
+        # Label to display the track image
+        self.image_label = tk.Label(window, bg="#D4BDAC")
+        self.image_label.grid(row=1, column=3, sticky="S")
 
         # Button to exit the application
         exit_btn = tk.Button(window, text="Exit", command=window.quit)
@@ -59,15 +58,27 @@ class TrackViewer:
         self.list_tracks_clicked()
 
 
+
     def view_tracks_clicked(self):
         key = self.input_txt.get() #gets the track number from the input
 
         if key in lib.library:
             track = lib.library[key]
-            track_details = f"{track.name}\n{track.artist}\nrating: {track.rating}\nplays: {track.play_count}"
+            track_details = (f"{track.name}\n"
+                             f"{track.artist}\n"
+                             f"rating: {track.rating}\n"
+                             f"plays: {track.play_count}")
             set_text(self.track_txt, track_details)    # Displays track details in the text widget
+            try:
+                self.track_img = tk.PhotoImage(file=track.picture)
+                self.image_label.configure(image=self.track_img)
+
+            except Exception as e:
+                set_text(self.track_txt, f"Error loading image: {e}")
+
         else:
             set_text(self.track_txt, f"Track {key} not found") # Displays a not found message
+            self.image_label.configure(image="") # Clears the image label when track is not found
         self.status_lbl.configure(text="View Track button was clicked!") # Updates the status label
 
 

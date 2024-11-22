@@ -18,17 +18,18 @@ class Playlist:
     def add_song(self, song, track_number):
         song.track_number = track_number
         self.songs.append(song)
+#create instance for Playlist class
+album1 = Playlist("Album1")
 
-
-class PlaylistApp(Playlist):
+class PlaylistApp:
     def __init__(self, window):
-        super().__init__("Playlist1")
+
         window.geometry("600x500")
         window.title("Playlist Manager")
         window.configure(bg="#D4BDAC")
 
         # Title Label
-        tk.Label(window,text="Playlist Manager",font=("Helvetica", 16, "bold"),bg="#D4BDAC",).grid(row=0, column=0, columnspan=3, pady=10)
+        tk.Label(window,text="Playlist Manager",font=("Helvetica", 17, "bold"),bg="#D4BDAC",).grid(row=0, column=0, columnspan=3, pady=10)
 
         # Label and Entry for track number
         tk.Label(window, text="Enter Track Number:", bg="#D4BDAC").grid(row=1, column=0, padx=5, pady=5, sticky="E")
@@ -44,12 +45,17 @@ class PlaylistApp(Playlist):
         tk.Button(button_frame, text="Reset Playlist", command=self.reset).pack(side="left", padx=5)
 
         # ScrolledText widget to display the playlist
-        self.playlist_display = tkst.ScrolledText(window, width=70, height=15, wrap="word")
-        self.playlist_display.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+        self.playlist_display = tkst.ScrolledText(window, width=70, height=20, wrap="word")
+        self.playlist_display.grid(row=3, column=0, columnspan=3)
 
     def add_to_playlist(self):
         """Add a track to the playlist based on track number."""
-        key = self.track_number_entry.get().strip()
+        key = self.track_number_entry.get().strip()\
+
+        if not key:
+            messagebox.showerror("Error", "Please fill in all fields.")
+            return
+
         if not key.isdigit():
             messagebox.showerror("Error", "Track number must be a numeric value.")
             return
@@ -57,19 +63,20 @@ class PlaylistApp(Playlist):
         if key in lib.library:
             # Add track to playlist
             track = lib.library[key]
-            self.add_song(track, key)
+            album1.add_song(track, key)
             self.display_playlist()
         else:
             messagebox.showerror("Error", f"Track number {key} is invalid.")
 
     def play(self):
         """Simulate playing the playlist by incrementing play counts."""
-        if not self.songs:
+
+        if not album1.songs:
             messagebox.showerror("Error", "Playlist is empty. Add tracks first.")
             return
 
         # Increment play counts for each track in the playlist using attribute track number in playlist class
-        for song in self.songs:
+        for song in album1.songs:
             key = song.track_number
             lib.increment_play_count(key)
 
@@ -81,22 +88,23 @@ class PlaylistApp(Playlist):
 
     def reset(self):
         """Reset the playlist and clear the text area."""
-        self.songs = []  # Clear the playlist
+        album1.songs = []  # Clear the playlist
         self.display_playlist()
         messagebox.showinfo("Info", "Playlist has been reset.")
 
     def display_playlist(self):
         """Display the playlist in the text area."""
-        if not self.songs:
+        if not album1.songs:
             set_text(self.playlist_display, "Playlist is empty.\n")
         else:
             content = "Current Playlist:\n"
-            for track in self.songs:
+            for track in album1.songs:
                 content += f"{track.name} - {track.artist} (Play Count: {track.play_count})\n"
             set_text(self.playlist_display, content)
 
 
 if __name__ == "__main__":
+
     create_window = tk.Tk()
     fonts.configure()
     PlaylistApp(create_window)

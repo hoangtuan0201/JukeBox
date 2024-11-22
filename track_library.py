@@ -1,12 +1,16 @@
 from library_item import LibraryItem
 
 
-library = {}
-library["01"] = LibraryItem("Another Brick in the Wall", "Pink Floyd", 4)
-library["02"] = LibraryItem("Stayin' Alive", "Bee Gees", 5)
-library["03"] = LibraryItem("Highway to Hell ", "AC/DC", 2)
-library["04"] = LibraryItem("Shape of You", "Ed Sheeran", 1)
-library["05"] = LibraryItem("Someone Like You", "Adele", 3)
+library = {
+    "01": LibraryItem("Another Brick in the Wall", "Pink Floyd", "pictures/pinkfloyd.png", 4),
+    "02": LibraryItem("Stayin' Alive", "Bee Gees", "pictures/beegees.png", 5),
+    "03": LibraryItem("Highway to Hell", "AC/DC", "pictures/acdc.png", 2),
+    "04": LibraryItem("Shape of You", "Ed Sheeran", "pictures/edsheeran.png", 1),
+    "05": LibraryItem("Someone Like You", "Adele", "pictures/adele.png", 3),
+    "06": LibraryItem("Am Tham Ben Em", "Son Tung MTP", "pictures/sontung.png", 5),
+}
+
+
 
 def list_all():
     output = ""
@@ -60,5 +64,12 @@ def increment_play_count(key):
     try:
         item = library[key]
         item.play_count += 1
+    except KeyError:
+        return
+
+def set_picture(key, picture):
+    try:
+        item = library[key]
+        item.picture = picture
     except KeyError:
         return
