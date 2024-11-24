@@ -11,7 +11,7 @@ class LibraryItem:
 
 
     def info(self):
-        return f"{self.name} - {self.artist} {self.stars()}"
+        return f"{self.name} - {self.artist} - {self.stars()} plays:{self.play_count}"
 
     def stars(self):
         stars = ""

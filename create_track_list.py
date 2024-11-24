@@ -49,7 +49,7 @@ class PlaylistApp:
         self.playlist_display.grid(row=3, column=0, columnspan=3)
 
     def add_to_playlist(self):
-        """Add a track to the playlist based on track number."""
+
         key = self.track_number_entry.get().strip()\
 
         if not key:

@@ -139,7 +139,7 @@ class TrackViewer:
             return
 
         # Format and display the sorted tracks
-        results = [f"{t.name} - {t.artist} - Rating: {t.rating}, Plays: {t.play_count}" for t in sorted_tracks]
+        results = [t.info() for t in sorted_tracks]
         set_text(self.list_txt, "\n".join(results))
         self.status_lbl.configure(text=f"Tracks filtered by {criteria.lower()}!")  # Updates the status label
 
