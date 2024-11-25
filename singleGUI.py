@@ -15,15 +15,15 @@ class JukeboxApp:
 
     def __init__(self, root):
         root.title("Jukebox")
-        root.geometry("1366x1050")
+        root.geometry("1366x800")
         root.configure(bg="#FFF1DB")  # Background color
 
         # Header Section
-        header_frame = tk.Frame(root, bg="#88C273", height=50)
+        header_frame = tk.Frame(root, bg="#88C273", height=10)
         header_frame.pack(fill="x", side="top")
 
         title_label = tk.Label(header_frame, text="Jukebox Application", fg="black", bg="#88C273")
-        title_label.pack(pady=10)
+        title_label.pack()
 
         # Search and Filter Section
         search_frame = tk.LabelFrame(root, text="Search and Filter", bg="#FFF1DB", fg="black")
@@ -60,7 +60,7 @@ class JukeboxApp:
         available_frame = tk.LabelFrame(lists_frame, text="Tracks Available", bg="#FFF1DB", fg="black")
         available_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
-        self.available_list = tkst.ScrolledText(available_frame, height=20, width=50, bg="white", fg="black")
+        self.available_list = tkst.ScrolledText(available_frame, height=10, width=50, bg="white", fg="black")
         self.available_list.pack(fill="both", expand=True, padx=10, pady=10)
         # Add button to list all tracks
         list_all_tracks_btn = tk.Button(available_frame, text="List All Tracks", bg="#88C273", fg="black",command=self.display_available_tracks)
@@ -70,7 +70,7 @@ class JukeboxApp:
         my_list_frame = tk.LabelFrame(lists_frame, text="My Playlist", bg="#FFF1DB", fg="black")
         my_list_frame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
-        self.playlist_display = tkst.ScrolledText(my_list_frame, height=20, width=40, bg="white", fg="black")
+        self.playlist_display = tkst.ScrolledText(my_list_frame, height=8, width=40, bg="white", fg="black")
         self.playlist_display.pack(fill="both", expand=True, padx=10, pady=10)
 
         add_track_frame = tk.Frame(my_list_frame, bg="#FFF1DB")
@@ -105,20 +105,26 @@ class JukeboxApp:
         tk.Button(info_frame, text="View Track", bg="#88C273", fg="black", command=self.view_track).grid(row=0, column=4, padx=5, pady=5)
         tk.Button(info_frame, text="Update", bg="#88C273", fg="black", command=self.update_rating).grid(row=0, column=5, padx=5, pady=5)
         self.track_details = tk.Text(info_frame, height=10, width=50, bg="white", fg="black")
-        self.track_details.grid(row=1, column=0, columnspan=5, padx=5, pady=5)
+        self.track_details.grid(row=1, column=0, columnspan=5, padx=5)
 
         # Label for track image
         self.image_label = tk.Label(info_frame, bg="#FFF1DB")
-        self.image_label.grid(row=1, column=6, padx=5, pady=5)
+        self.image_label.grid(row=1, column=6, padx=5)
 
 ############################## FUNCTIONS #########################
     #SEARCH AND SORT FUNCTIONS
     def search_tracks(self):
         query = self.search_entry.get().lower()
+
+        if not query:
+            set_text(self.available_list, "Please fill in the search field")
+            return
+
         results = []
         for key, track in lib.library.items():
             if query in track.name.lower() or query in track.artist.lower():
                 results.append(f"{key} {track.name} - {track.artist} - {track.stars()} plays:{track.play_count}")
+
         if results:
             set_text(self.available_list, "\n".join(results))
         else:
@@ -145,7 +151,6 @@ class JukeboxApp:
         # Format and display the sorted tracks
         results = [t.info() for t in sorted_tracks]
         set_text(self.available_list, "\n".join(results))
-
 
     #VIEW TRACK FUNCTIONS
     def display_available_tracks(self):
