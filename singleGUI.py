@@ -219,10 +219,7 @@ class JukeboxApp:
         key = self.track_id_entry.get()  # Gets the track number from the input
         if key in lib.library:
             track = lib.library[key]
-            content = (f"{track.name}\n"
-                             f"{track.artist}\n"
-                             f"rating: {track.rating}\n"
-                             f"plays: {track.play_count}")
+            content = (f"{track.name}\n" f"{track.artist}\n"f"rating: {track.rating}\n"f"plays: {track.play_count}")
             set_text(self.track_details, content)  # Displays track details in the text widget
             #display image for each track
             try:
@@ -261,7 +258,7 @@ class JukeboxApp:
 
         # Check if the track number exists in the library
         if key in lib.library:
-            track = lib.library[key]
+
             lib.set_rating(key, new_rating)  # Corrected to pass the parsed integer
             self.view_track()
             messagebox.showinfo("Success", "Track rating updated successfully!")
