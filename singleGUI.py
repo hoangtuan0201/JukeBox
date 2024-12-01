@@ -13,6 +13,7 @@ def set_text(text_area, content):
     text_area.insert(tk.END, content)
 class JukeboxApp:
 
+############################ UI COMPONENTS ##########
     def __init__(self, root):
         root.title("Jukebox")
         root.geometry("1366x800")
@@ -123,7 +124,7 @@ class JukeboxApp:
         results = []
         for key, track in lib.library.items():
             if query in track.name.lower() or query in track.artist.lower():
-                results.append(f"{key} {track.name} - {track.artist} - {track.stars()} plays:{track.play_count}")
+                results.append(f"{key} {track.name} - {track.artist} - {track.stars()} url:{track.youtube_link} plays:{track.play_count}" )
 
         if results:
             set_text(self.available_list, "\n".join(results))
@@ -219,7 +220,7 @@ class JukeboxApp:
         key = self.track_id_entry.get()  # Gets the track number from the input
         if key in lib.library:
             track = lib.library[key]
-            content = (f"{track.name}\n" f"{track.artist}\n"f"rating: {track.rating}\n"f"plays: {track.play_count}")
+            content = (f"{track.name}\n{track.artist}\nrating: {track.rating}\nplays: {track.play_count}\nURL:{track.youtube_link}")
             set_text(self.track_details, content)  # Displays track details in the text widget
             #display image for each track
             try:

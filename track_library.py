@@ -20,7 +20,8 @@ def load_library_from_csv():
                     name=row["Name"],
                     artist=row["Artist"],
                     picture=row["Picture"],
-                    rating=int(row["Rating"])
+                    youtube_link=row["YouTubeLink"],
+                    rating=int(row["Rating"]),
                 )
                 library[row["TrackID"]].play_count = int(row["PlayCount"])
     except FileNotFoundError:
@@ -33,7 +34,7 @@ def save_library_to_csv():
     """Save the current library to a CSV file."""
     try:
         with open(CSV_FILE_PATH, mode='w', newline='', encoding='utf-8') as file:
-            fieldnames = ["TrackID", "Name", "Artist", "Picture", "Rating", "PlayCount"]
+            fieldnames = ["TrackID", "Name", "Artist", "Picture", "YouTubeLink", "Rating", "PlayCount"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for track_id, item in library.items():
@@ -42,6 +43,7 @@ def save_library_to_csv():
                     "Name": item.name,
                     "Artist": item.artist,
                     "Picture": item.picture,
+                    "YouTubeLink": item.youtube_link,
                     "Rating": item.rating,
                     "PlayCount": item.play_count,
                 })
@@ -76,6 +78,7 @@ def list_all():
         item = library[key]
         output += f"{key} {item.info()}\n"
     return output
+
 def get_play_count(key):
     try:
         item = library[key]
@@ -103,3 +106,5 @@ def get_name(key):
         return item.name
     except KeyError:
         return None
+
+print(list_all())

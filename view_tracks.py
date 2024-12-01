@@ -44,31 +44,6 @@ class TrackViewer:
         self.image_label = tk.Label(window, bg="#D4BDAC")
         self.image_label.grid(row=1, column=3, sticky="S")
 
-        # Entry for search functionality
-        search_lbl = tk.Label(window, text="Search (Track/Artist)")
-        search_lbl.grid(row=2, column=0, padx=10, pady=10)
-
-        self.search_txt = tk.Entry(window, width=20)
-        self.search_txt.grid(row=2, column=1, padx=10, pady=10)
-
-        search_btn = tk.Button(window, text="Search", command=self.search_tracks)
-        search_btn.grid(row=2, column=2, padx=10, pady=10)
-
-
-        # Filter and sort options
-        filter_lbl = tk.Label(window, text="Filter by Rating or Play Count")
-        filter_lbl.grid(row=3, column=0, padx=10, pady=10)
-
-        # Dropdown to select filter criteria
-        self.filter_var = tk.StringVar(window)
-        self.filter_var.set("Rating")  # Default option
-        filter_dropdown = tk.OptionMenu(window, self.filter_var, "Rating", "Play Count", "No Filter")
-        filter_dropdown.grid(row=3, column=1, padx=10, pady=10)
-
-        # Button to apply filter
-        filter_btn = tk.Button(window, text="Apply Filter", command=self.filter_tracks)
-        filter_btn.grid(row=3, column=2, padx=10, pady=10)
-
         # Button to exit the application
         exit_btn = tk.Button(window, text="Exit", command=window.quit)
         exit_btn.grid(row=4, column=2, padx=10, pady=10)
@@ -107,41 +82,41 @@ class TrackViewer:
         set_text(self.list_txt, track_list)  # Displays the track list in the scrolled text widget
         self.status_lbl.configure(text="List Tracks button was clicked!")  # Updates the status label
 
-    def search_tracks(self):
-        query = self.search_txt.get().lower()
-        results = []
-        for key, track in lib.library.items():
-            if query in track.name.lower() or query in track.artist.lower():
-                results.append(f"{key}. {track.name} - {track.artist} - {track.stars()}")
-        if results:
-            set_text(self.list_txt, "\n".join(results))
-        else:
-            set_text(self.list_txt, f"No results found for '{query}'")
-
-        self.status_lbl.configure(text="Search button was clicked!")  # Updates the status label
-
-    def filter_tracks(self):
-        criteria = self.filter_var.get()  # Get the selected filter criteria (Rating or Play Count)
-        tracks = list(lib.library.values())
-        if criteria == "No Filter":
-            self.list_tracks_clicked()
-            return
-
-
-        if criteria == "Rating":
-            # Sort by rating in descending order
-            sorted_tracks = sorted(tracks, key=lambda t: t.rating, reverse=True)
-        elif criteria == "Play Count":
-            # Sort by play count in descending order
-            sorted_tracks = sorted(tracks, key=lambda t: t.play_count, reverse=True)
-        else:
-            set_text(self.list_txt, "Invalid filter criteria selected.")
-            return
-
-        # Format and display the sorted tracks
-        results = [t.info() for t in sorted_tracks]
-        set_text(self.list_txt, "\n".join(results))
-        self.status_lbl.configure(text=f"Tracks filtered by {criteria.lower()}!")  # Updates the status label
+    # def search_tracks(self):
+    #     query = self.search_txt.get().lower()
+    #     results = []
+    #     for key, track in lib.library.items():
+    #         if query in track.name.lower() or query in track.artist.lower():
+    #             results.append(f"{key}. {track.name} - {track.artist} - {track.stars()}")
+    #     if results:
+    #         set_text(self.list_txt, "\n".join(results))
+    #     else:
+    #         set_text(self.list_txt, f"No results found for '{query}'")
+    #
+    #     self.status_lbl.configure(text="Search button was clicked!")  # Updates the status label
+    #
+    # def filter_tracks(self):
+    #     criteria = self.filter_var.get()  # Get the selected filter criteria (Rating or Play Count)
+    #     tracks = list(lib.library.values())
+    #     if criteria == "No Filter":
+    #         self.list_tracks_clicked()
+    #         return
+    #
+    #
+    #     if criteria == "Rating":
+    #         # Sort by rating in descending order
+    #         sorted_tracks = sorted(tracks, key=lambda t: t.rating, reverse=True)
+    #     elif criteria == "Play Count":
+    #         # Sort by play count in descending order
+    #         sorted_tracks = sorted(tracks, key=lambda t: t.play_count, reverse=True)
+    #     else:
+    #         set_text(self.list_txt, "Invalid filter criteria selected.")
+    #         return
+    #
+    #     # Format and display the sorted tracks
+    #     results = [t.info() for t in sorted_tracks]
+    #     set_text(self.list_txt, "\n".join(results))
+    #     self.status_lbl.configure(text=f"Tracks filtered by {criteria.lower()}!")  # Updates the status label
 
 
 if __name__ == "__main__":

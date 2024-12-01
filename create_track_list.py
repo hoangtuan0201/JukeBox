@@ -30,8 +30,7 @@ class PlaylistApp:
 
         # Title Label
         tk.Label(window,text="Playlist Manager",font=("Helvetica", 17, "bold"),bg="#D4BDAC",).grid(row=0, column=0, columnspan=3, pady=10)
-
-        # Label and Entry for track number
+            # Label and Entry for track number
         tk.Label(window, text="Enter Track Number:", bg="#D4BDAC").grid(row=1, column=0, padx=5, pady=5, sticky="E")
         self.track_number_entry = tk.Entry(window, width=10)
         self.track_number_entry.grid(row=1, column=1, padx=5, pady=5, sticky="W")
@@ -50,7 +49,7 @@ class PlaylistApp:
 
     def add_to_playlist(self):
 
-        key = self.track_number_entry.get().strip()\
+        key = self.track_number_entry.get().strip()
 
         if not key:
             messagebox.showerror("Error", "Please fill in all fields.")
