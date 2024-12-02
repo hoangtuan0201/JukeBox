@@ -41,7 +41,6 @@ Rate Tracks: Assign ratings to tracks and view average ratings.
 Search Tracks: Use the search bar to filter tracks by keywords or criteria.
 Project Structure 🗂️
 plaintext
-Copy code
 jukebox-simulation/
 │
 ├── jukebox.py              # Main application file
@@ -60,6 +59,7 @@ jukebox-simulation/
 │
 ├── requirements.txt        # List of required Python libraries
 └── README.md               # Project documentation
+
 Design Highlights 💡
 Object-Oriented Programming: Utilizes principles like encapsulation, inheritance, and polymorphism.
 Observer Pattern: Ensures real-time updates across GUI components.
