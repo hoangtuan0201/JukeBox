@@ -1,5 +1,5 @@
 import csv
-from library_item import LibraryItem
+from model.library_item import LibraryItem
 
 # Path to the CSV file storing library data
 CSV_FILE_PATH = "track_library.csv"

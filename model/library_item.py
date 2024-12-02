@@ -23,6 +23,7 @@ class LibraryItem:
         return "*" * self.rating
 
 
+
 class LibraryItemPodcast(LibraryItem):
     def __init__(self, name, artist, picture, youtube_link, duration, episode_number, series_name, rating=0):
         super().__init__(name, artist, picture, youtube_link, rating)
@@ -64,6 +65,15 @@ class LibraryItemAlbum(LibraryItem):
         import datetime
         current_year = datetime.datetime.now().year
         return current_year - self.release_year > 25
+
+class Playlist:
+    def __init__(self, name):
+        self.name = name
+        self.songs = []
+
+    def add_song(self, song, track_number):
+        song.track_number = track_number
+        self.songs.append(song)
 
 # Example Usage
 # if __name__ == "__main__":

@@ -1,5 +1,5 @@
 import pytest
-from library_item import LibraryItem, LibraryItemPodcast, LibraryItemAlbum
+from model.library_item import LibraryItem, LibraryItemPodcast, LibraryItemAlbum
 
 
 # Test the basic LibraryItem class

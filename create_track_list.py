@@ -3,21 +3,14 @@ import tkinter.scrolledtext as tkst
 import font_manager as fonts
 import track_library as lib
 from tkinter import messagebox
-
+from model.library_item import Playlist
 
 def set_text(text_area, content):
     text_area.delete("1.0", tk.END)  # Clear any existing text
     text_area.insert(tk.END, content)
 
 
-class Playlist:
-    def __init__(self, name):
-        self.name = name
-        self.songs = []
 
-    def add_song(self, song, track_number):
-        song.track_number = track_number
-        self.songs.append(song)
 #create instance for Playlist class
 album1 = Playlist("Album1")
 
